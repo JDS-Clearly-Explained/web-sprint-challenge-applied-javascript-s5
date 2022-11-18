@@ -17,17 +17,49 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  const card = document.createElement('div')
+  const headline = document.createElement('div')
+  const author = document.createElement('div')
+  const imgContainer = document.createElement('div')
+  const image = document.createElement('img')
+  const authorName = document.createElement('span')
+
+  card.appendChild(headline)
+  card.appendChild(author)
+  author.appendChild(imgContainer)
+  author.appendChild(authorName)
+  imgContainer.appendChild(image)
+
+  card.classList.add('card')
+  headline.classList.add('headline')
+  author.classList.add('author')
+  imgContainer.classList.add('img-container')
+
+  headline.textContent = article.headline
+  image.src = article.authorPhoto
+  authorName.textContent = `By ${article.authorName}`
+
+  card.addEventListener('click', () => {
+    console.log(headline.textContent)
+  })
+
+  return card
 }
 
-const cardAppender = (selector) => {
+const cardAppender = async (selector) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
-  // It should obtain articles from this endpoint: `http://localhost:5001/api/articles` (test it with console.log!!).
+  // It should obtain articles from this endpoint: `http://localhost:5000/api/articles` (test it in Postman/HTTPie!).
   // However, the articles do not come organized in a single, neat array. Inspect the response closely!
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  const res = await fetch('http://localhost:5001/api/articles')
+  const json = await res.json()
+  const articles = Object.values(json.articles).flat()
+  const container = document.querySelector(selector)
+  articles.forEach(article => container.appendChild(Card(article)))
 }
 
 export { Card, cardAppender }
