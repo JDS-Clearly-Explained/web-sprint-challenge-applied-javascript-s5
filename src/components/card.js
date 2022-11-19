@@ -47,6 +47,9 @@ const cardAppender = (selector) => {
   //
   const selected = document.querySelector(selector)
 
+ 
+  //hint: once you have all the data, separate the articles by topic and store each array to it's own variable. This will help you when you need to iterate over them and you can call the cardBuilder function for each topic where you pass in the array of articles for that topic, loop over them, call Card() for each one passing in each item from the array and append it to the DOM.
+
   axios.get (`http://localhost:5001/api/articles`)
   .then(res => {
     console.log(res.data.articles)
@@ -63,13 +66,19 @@ const cardAppender = (selector) => {
     // create a variable to hold only the articles for the technology topic
     const tech = response.technology;
     
+    //takes in a set of data as an argument.
     function cardBuilder(data) {
+      //loops through the data
       data.forEach(element => {
+        //creates a card for each element in the data
         const currentCard = Card(element)
+        //appends the card to the selected DOM element
           selected.appendChild(currentCard);
       })
 
     }
+
+    //calls the cardBuilder function for each topic and passes in the data for that topic
     cardBuilder(bootstrap)
     cardBuilder(javascript)
     cardBuilder(jquery)
